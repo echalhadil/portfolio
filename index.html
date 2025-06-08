@@ -1,870 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adil Echalh - Full-Stack Developer</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #ffffff;
-            --secondary: #888888;
-            --accent: #0066ff;
-            --dark: #000000;
-            --dark-gray: #111111;
-            --light-gray: #f5f5f5;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--dark);
-            color: var(--primary);
-            overflow-x: hidden;
-            cursor: none;
-        }
-
-        /* Custom Cursor */
-        .cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: var(--accent);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: transform 0.1s ease;
-        }
-
-        .cursor-follower {
-            position: fixed;
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        /* Navigation */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 2rem 4rem;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .nav-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 3rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--secondary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--accent);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-text {
-            max-width: 1400px;
-        }
-
-        .hero-title {
-            font-size: clamp(4rem, 12vw, 12rem);
-            font-weight: 900;
-            line-height: 0.9;
-            letter-spacing: -0.04em;
-            margin-bottom: 2rem;
-            overflow: hidden;
-        }
-
-        .hero-title .line {
-            display: block;
-            overflow: hidden;
-        }
-
-        .hero-title .line span {
-            display: inline-block;
-            transform: translateY(100%);
-            animation: slideUp 1s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-        }
-
-        .hero-title .line:nth-child(2) span {
-            animation-delay: 0.1s;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1.5rem, 4vw, 3rem);
-            font-weight: 300;
-            color: var(--secondary);
-            margin-bottom: 3rem;
-            transform: translateY(50px);
-            opacity: 0;
-            animation: fadeInUp 1s cubic-bezier(0.23, 1, 0.32, 1) 0.5s forwards;
-        }
-
-        .hero-description {
-            font-size: 1.2rem;
-            color: var(--secondary);
-            max-width: 600px;
-            line-height: 1.6;
-            transform: translateY(50px);
-            opacity: 0;
-            animation: fadeInUp 1s cubic-bezier(0.23, 1, 0.32, 1) 0.7s forwards;
-        }
-
-        .hero-cta {
-            position: absolute;
-            bottom: 4rem;
-            right: 4rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transform: translateY(50px);
-            opacity: 0;
-            animation: fadeInUp 1s cubic-bezier(0.23, 1, 0.32, 1) 0.9s forwards;
-        }
-
-        .cta-button {
-            background: var(--accent);
-            color: white;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .cta-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 4rem;
-            left: 4rem;
-            color: var(--secondary);
-            font-size: 0.9rem;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-        }
-
-        /* About Section */
-        .about {
-            padding: 8rem 4rem;
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 8rem;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .about-title {
-            font-size: clamp(2rem, 6vw, 4rem);
-            font-weight: 800;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-        }
-
-        .about-content {
-            font-size: 1.5rem;
-            line-height: 1.6;
-            color: var(--secondary);
-        }
-
-        .about-content p {
-            margin-bottom: 2rem;
-        }
-
-        .about-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--accent);
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        /* Skills Section */
-        .skills {
-            padding: 8rem 4rem;
-            background: var(--dark-gray);
-        }
-
-        .skills-title {
-            font-size: clamp(2rem, 6vw, 4rem);
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 6rem;
-            letter-spacing: -0.02em;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .skill-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            cursor: pointer;
-        }
-
-        .skill-card:hover {
-            transform: translateY(-10px);
-            background: rgba(0, 102, 255, 0.05);
-            border-color: var(--accent);
-        }
-
-        .skill-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-
-        .skill-name {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .skill-level {
-            color: var(--secondary);
-            font-size: 0.9rem;
-        }
-
-        /* Projects Section */
-        .projects {
-            padding: 8rem 4rem;
-        }
-
-        .projects-title {
-            font-size: clamp(2rem, 6vw, 4rem);
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 6rem;
-            letter-spacing: -0.02em;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 4rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .project-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 3rem;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 102, 255, 0.1), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .project-card:hover::before {
-            left: 100%;
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent);
-        }
-
-        .project-number {
-            font-size: 0.9rem;
-            color: var(--accent);
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .project-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
-
-        .project-description {
-            color: var(--secondary);
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .tech-tag {
-            background: rgba(0, 102, 255, 0.1);
-            color: var(--accent);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 8rem 4rem;
-            background: var(--dark-gray);
-            text-align: center;
-        }
-
-        .contact-title {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 900;
-            margin-bottom: 2rem;
-            letter-spacing: -0.04em;
-        }
-
-        .contact-subtitle {
-            font-size: 1.5rem;
-            color: var(--secondary);
-            margin-bottom: 4rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            gap: 4rem;
-            flex-wrap: wrap;
-            margin-bottom: 4rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-
-        .contact-item:hover {
-            color: var(--accent);
-            transform: translateY(-5px);
-        }
-
-        .contact-icon {
-            font-size: 1.5rem;
-        }
-
-        /* Animations */
-        @keyframes slideUp {
-            to {
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar,
-            .hero,
-            .about,
-            .skills,
-            .projects,
-            .contact {
-                padding-left: 2rem;
-                padding-right: 2rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .about {
-                grid-template-columns: 1fr;
-                gap: 4rem;
-            }
-
-            .hero-cta {
-                position: static;
-                margin-top: 3rem;
-                justify-content: flex-start;
-            }
-
-            .scroll-indicator {
-                display: none;
-            }
-
-            .contact-info {
-                flex-direction: column;
-                gap: 2rem;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Scroll animations */
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .scroll-reveal.revealed {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+    <meta name="description"
+        content="Senior Full-Stack Developer & Tech Lead crafting next-generation web applications. Expert in React, Vue, Laravel ecosystem. Leading development teams, mentoring developers, and delivering enterprise-grade solutions from Morocco.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+
+<body class="font-inter bg-black text-white overflow-x-hidden">
     <div class="cursor"></div>
     <div class="cursor-follower"></div>
 
-    <nav class="navbar">
-        <div class="nav-content">
-            <div class="logo">ADIL ECHALH</div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Work</a></li>
-                <li><a href="#contact">Contact</a></li>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full px-8 lg:px-16 py-8 z-50 backdrop-blur-md transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-2xl font-black tracking-tight">ADIL ECHALH</div>
+            <ul class="hidden md:flex gap-12 list-none">
+                <li><a href="#home"
+                        class="text-gray-400 hover:text-white transition-colors duration-300 font-medium relative group">
+                        Home
+                        <span
+                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
+                    </a></li>
+                <li><a href="#about"
+                        class="text-gray-400 hover:text-white transition-colors duration-300 font-medium relative group">
+                        About
+                        <span
+                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
+                    </a></li>
+                <li><a href="#skills"
+                        class="text-gray-400 hover:text-white transition-colors duration-300 font-medium relative group">
+                        Skills
+                        <span
+                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
+                    </a></li>
+                <li><a href="#projects"
+                        class="text-gray-400 hover:text-white transition-colors duration-300 font-medium relative group">
+                        Work
+                        <span
+                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
+                    </a></li>
+                <li><a href="#contact"
+                        class="text-gray-400 hover:text-white transition-colors duration-300 font-medium relative group">
+                        Contact
+                        <span
+                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
+                    </a></li>
             </ul>
+            <button class="md:hidden text-white">
+                <i class="ph ph-list text-2xl"></i>
+            </button>
         </div>
     </nav>
 
-    <section id="home" class="hero">
-        <div class="hero-text">
-            <h1 class="hero-title">
-                <span class="line"><span>FULL-STACK</span></span>
-                <span class="line"><span>DEVELOPER</span></span>
-            </h1>
-            <p class="hero-subtitle">Crafting Digital Experiences</p>
-            <p class="hero-description">
-                Based in Morocco, building modern web applications with cutting-edge technologies. 
-                Specialized in creating seamless user experiences and robust backend systems.
+    <!-- Hero Section -->
+    <section id="home" class="h-screen flex flex-col justify-center px-8 lg:px-16 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="hero-text max-w-6xl">
+                <h1
+                    class="hero-title text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-black leading-[0.9] tracking-tight mb-8">
+                    <span class="line block overflow-hidden">
+                        <span class="inline-block transform translate-y-full animate-slide-up">YOU'VE GOT</span>
+                    </span>
+                    <span class="line block overflow-hidden">
+                        <span class="inline-block transform translate-y-full animate-slide-up"
+                            style="animation-delay: 0.1s;">THE <span
+                                class="text-accent animate-slide-up">IDEA</span>,</span>
+                    </span>
+                    <span class="line block overflow-hidden">
+                        <span class="inline-block transform translate-y-full animate-slide-up"
+                            style="animation-delay: 0.2s;">GREAT! 💡</span>
+                    </span>
+                </h1>
+                <p class="text-2xl md:text-4xl lg:text-5xl font-light text-gray-400 mb-12 opacity-0 transform translate-y-12 animate-fade-in-up"
+                    style="animation-delay: 0.5s;">
+                    LEAVE THE REST TO ME!
+                </p>
+                <p class="text-xl text-gray-400 max-w-2xl leading-relaxed opacity-0 transform translate-y-12 animate-fade-in-up"
+                    style="animation-delay: 0.7s;">
+                    Based in Morocco, building modern web applications with cutting-edge technologies.
+                    Specialized in creating seamless user experiences and robust backend systems.
+                </p>
+            </div>
+
+            <div class="absolute bottom-16 right-8 lg:right-16 opacity-0 transform translate-y-12 animate-fade-in-up"
+                style="animation-delay: 0.9s;">
+                <a href="#projects"
+                    class="bg-accent text-white px-8 py-4 rounded-full text-lg font-semibold hover:scale-105 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 inline-block">
+                    View Work
+                </a>
+            </div>
+
+            <div
+                class="absolute bottom-16 left-8 lg:left-16 text-gray-400 text-sm writing-mode-vertical-rl text-orientation-mixed hidden md:block">
+                SCROLL DOWN
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 px-8 lg:px-16 scroll-reveal">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-32 items-center min-h-screen">
+            <h2 class="text-4xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight">
+                About Me
+            </h2>
+            <div class="lg:col-span-2 space-y-8">
+                <div class="text-xl md:text-2xl leading-relaxed text-gray-400 space-y-8">
+                    <p>
+                        I'm a passionate full-stack developer from Morocco with expertise in modern web technologies.
+                        Currently expanding my skills with Symfony and Nuxt.js to create even more powerful
+                        applications.
+                    </p>
+                    <p>
+                        I specialize in turning complex problems into elegant, simple solutions.
+                        My approach combines technical expertise with creative problem-solving to deliver
+                        exceptional digital experiences.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-3 gap-8 mt-16">
+                    <div class="text-center">
+                        <span class="block text-5xl font-black text-accent mb-2 counter" data-target="3">0</span>
+                        <span class="text-sm text-gray-400 uppercase tracking-widest">Years Experience</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="block text-5xl font-black text-accent mb-2 counter" data-target="25">0</span>
+                        <span class="text-sm text-gray-400 uppercase tracking-widest">Projects Completed</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="block text-5xl font-black text-accent mb-2 counter" data-target="8">0</span>
+                        <span class="text-sm text-gray-400 uppercase tracking-widest">Technologies</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-32 px-8 lg:px-16 bg-gray-900">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl md:text-6xl lg:text-7xl font-black text-center mb-24 tracking-tight scroll-reveal">
+                Skills & Technologies
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div
+                    class="skill-card bg-white/5 border border-white/10 rounded-3xl p-12 text-center transition-all duration-500 hover:-translate-y-4 hover:bg-accent/5 hover:border-accent cursor-pointer scroll-reveal">
+                    <i class="ph ph-coffee text-6xl mb-6 block text-orange-500"></i>
+                    <h3 class="text-2xl font-semibold mb-2">Java</h3>
+                    <p class="text-gray-400">Enterprise Applications</p>
+                </div>
+                <div
+                    class="skill-card bg-white/5 border border-white/10 rounded-3xl p-12 text-center transition-all duration-500 hover:-translate-y-4 hover:bg-accent/5 hover:border-accent cursor-pointer scroll-reveal">
+                    <i class="ph ph-atom text-6xl mb-6 block text-cyan-400"></i>
+                    <h3 class="text-2xl font-semibold mb-2">React</h3>
+                    <p class="text-gray-400">Dynamic UIs</p>
+                </div>
+                <div
+                    class="skill-card bg-white/5 border border-white/10 rounded-3xl p-12 text-center transition-all duration-500 hover:-translate-y-4 hover:bg-accent/5 hover:border-accent cursor-pointer scroll-reveal">
+                    <i class="ph ph-triangle text-6xl mb-6 block text-green-500"></i>
+                    <h3 class="text-2xl font-semibold mb-2">Vue.js</h3>
+                    <p class="text-gray-400">Progressive Framework</p>
+                </div>
+                <div
+                    class="skill-card bg-white/5 border border-white/10 rounded-3xl p-12 text-center transition-all duration-500 hover:-translate-y-4 hover:bg-accent/5 hover:border-accent cursor-pointer scroll-reveal">
+                    <i class="ph ph-code text-6xl mb-6 block text-indigo-500"></i>
+                    <h3 class="text-2xl font-semibold mb-2">PHP</h3>
+                    <p class="text-gray-400">Server-Side Logic</p>
+                </div>
+                <div
+                    class="skill-card bg-white/5 border border-white/10 rounded-3xl p-12 text-center transition-all duration-500 hover:-translate-y-4 hover:bg-accent/5 hover:border-accent cursor-pointer scroll-reveal">
+                    <i class="ph ph-palette text-6xl mb-6 block text-red-500"></i>
+                    <h3 class="text-2xl font-semibold mb-2">Laravel</h3>
+                    <p class="text-gray-400">Elegant Framework</p>
+                </div>
+                <div
+                    class="skill-card bg-white/5 border border-white/10 rounded-3xl p-12 text-center transition-all duration-500 hover:-translate-y-4 hover:bg-accent/5 hover:border-accent cursor-pointer scroll-reveal">
+                    <i class="ph ph-database text-6xl mb-6 block text-blue-500"></i>
+                    <h3 class="text-2xl font-semibold mb-2">MySQL</h3>
+                    <p class="text-gray-400">Database Design</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-32 px-8 lg:px-16">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl md:text-6xl lg:text-7xl font-black text-center mb-24 tracking-tight scroll-reveal">
+                Featured Work
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div
+                    class="project-card bg-white/5 border border-white/10 rounded-3xl p-12 transition-all duration-500 hover:-translate-y-4 hover:border-accent cursor-pointer relative overflow-hidden scroll-reveal">
+                    <div class="text-sm text-accent font-semibold mb-4">01</div>
+                    <h3 class="text-3xl font-bold mb-4 tracking-tight">Healthcare Platform</h3>
+                    <p class="text-gray-400 leading-relaxed mb-8">
+                        A comprehensive healthcare management system featuring patient management,
+                        appointment scheduling, and medical records with modern UI/UX design.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">PHP</span>
+                        <span class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">Laravel</span>
+                        <span class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">Vue.js</span>
+                        <span class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">MySQL</span>
+                    </div>
+                </div>
+                <div
+                    class="project-card bg-white/5 border border-white/10 rounded-3xl p-12 transition-all duration-500 hover:-translate-y-4 hover:border-accent cursor-pointer relative overflow-hidden scroll-reveal">
+                    <div class="text-sm text-accent font-semibold mb-4">02</div>
+                    <h3 class="text-3xl font-bold mb-4 tracking-tight">Social Network</h3>
+                    <p class="text-gray-400 leading-relaxed mb-8">
+                        Feature-rich social networking platform with real-time messaging,
+                        post sharing, and advanced user engagement capabilities.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">React</span>
+                        <span class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">Node.js</span>
+                        <span
+                            class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">Socket.io</span>
+                        <span class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">MongoDB</span>
+                    </div>
+                </div>
+                <div
+                    class="project-card bg-white/5 border border-white/10 rounded-3xl p-12 transition-all duration-500 hover:-translate-y-4 hover:border-accent cursor-pointer relative overflow-hidden scroll-reveal">
+                    <div class="text-sm text-accent font-semibold mb-4">03</div>
+                    <h3 class="text-3xl font-bold mb-4 tracking-tight">Library Management</h3>
+                    <p class="text-gray-400 leading-relaxed mb-8">
+                        Complete library management solution with book cataloging,
+                        member management, and automated fine calculation system.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">Java</span>
+                        <span class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">Spring
+                            Boot</span>
+                        <span
+                            class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">Thymeleaf</span>
+                        <span
+                            class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">PostgreSQL</span>
+                    </div>
+                </div>
+                <div
+                    class="project-card bg-white/5 border border-white/10 rounded-3xl p-12 transition-all duration-500 hover:-translate-y-4 hover:border-accent cursor-pointer relative overflow-hidden scroll-reveal">
+                    <div class="text-sm text-accent font-semibold mb-4">04</div>
+                    <h3 class="text-3xl font-bold mb-4 tracking-tight">E-Commerce Platform</h3>
+                    <p class="text-gray-400 leading-relaxed mb-8">
+                        Modern e-commerce solution with payment integration,
+                        inventory management, and responsive design for all devices.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">Vue.js</span>
+                        <span class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">Nuxt.js</span>
+                        <span class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">Stripe</span>
+                        <span
+                            class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">Firebase</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-32 px-8 lg:px-16 bg-gray-900 text-center">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-5xl md:text-7xl lg:text-8xl font-black mb-8 tracking-tight scroll-reveal">
+                Let's Connect
+            </h2>
+            <p class="text-2xl text-gray-400 mb-16 max-w-2xl mx-auto scroll-reveal">
+                Ready to bring your ideas to life? Let's discuss your next project and create something amazing
+                together.
             </p>
-        </div>
-        <div class="hero-cta">
-            <a href="#projects" class="cta-button">View Work</a>
-        </div>
-        <div class="scroll-indicator">SCROLL DOWN</div>
-    </section>
-
-    <section id="about" class="about scroll-reveal">
-        <h2 class="about-title">About Me</h2>
-        <div class="about-content">
-            <p>
-                I'm a passionate full-stack developer from Morocco with expertise in modern web technologies. 
-                Currently expanding my skills with Symfony and Nuxt.js to create even more powerful applications.
-            </p>
-            <p>
-                I specialize in turning complex problems into elegant, simple solutions. 
-                My approach combines technical expertise with creative problem-solving to deliver 
-                exceptional digital experiences.
-            </p>
-            <div class="about-stats">
-                <div class="stat">
-                    <span class="stat-number">3+</span>
-                    <span class="stat-label">Years Experience</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">25+</span>
-                    <span class="stat-label">Projects Completed</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">8+</span>
-                    <span class="stat-label">Technologies</span>
-                </div>
+            <div class="flex flex-col md:flex-row justify-center gap-8 mb-16 scroll-reveal">
+                <a href="mailto:echalhadil@gmail.com"
+                    class="flex items-center gap-4 text-white hover:text-accent transition-all duration-300 hover:-translate-y-2 text-xl">
+                    <i class="ph ph-envelope text-2xl"></i>
+                    <span>echalhadil@gmail.com</span>
+                </a>
+                <a href="https://linkedin.com/in/echalh-adil" target="_blank"
+                    class="flex items-center gap-4 text-white hover:text-accent transition-all duration-300 hover:-translate-y-2 text-xl">
+                    <i class="ph ph-linkedin-logo text-2xl"></i>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://github.com/echalhadil" target="_blank"
+                    class="flex items-center gap-4 text-white hover:text-accent transition-all duration-300 hover:-translate-y-2 text-xl">
+                    <i class="ph ph-github-logo text-2xl"></i>
+                    <span>GitHub</span>
+                </a>
             </div>
-        </div>
-    </section>
-
-    <section id="skills" class="skills">
-        <h2 class="skills-title scroll-reveal">Skills & Technologies</h2>
-        <div class="skills-grid">
-            <div class="skill-card scroll-reveal">
-                <span class="skill-icon">☕</span>
-                <h3 class="skill-name">Java</h3>
-                <p class="skill-level">Enterprise Applications</p>
-            </div>
-            <div class="skill-card scroll-reveal">
-                <span class="skill-icon">⚛️</span>
-                <h3 class="skill-name">React</h3>
-                <p class="skill-level">Dynamic UIs</p>
-            </div>
-            <div class="skill-card scroll-reveal">
-                <span class="skill-icon">💚</span>
-                <h3 class="skill-name">Vue.js</h3>
-                <p class="skill-level">Progressive Framework</p>
-            </div>
-            <div class="skill-card scroll-reveal">
-                <span class="skill-icon">🐘</span>
-                <h3 class="skill-name">PHP</h3>
-                <p class="skill-level">Server-Side Logic</p>
-            </div>
-            <div class="skill-card scroll-reveal">
-                <span class="skill-icon">🔥</span>
-                <h3 class="skill-name">Laravel</h3>
-                <p class="skill-level">Elegant Framework</p>
-            </div>
-            <div class="skill-card scroll-reveal">
-                <span class="skill-icon">🗄️</span>
-                <h3 class="skill-name">MySQL</h3>
-                <p class="skill-level">Database Design</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects" class="projects">
-        <h2 class="projects-title scroll-reveal">Featured Work</h2>
-        <div class="projects-grid">
-            <div class="project-card scroll-reveal">
-                <div class="project-number">01</div>
-                <h3 class="project-title">Healthcare Platform</h3>
-                <p class="project-description">
-                    A comprehensive healthcare management system featuring patient management, 
-                    appointment scheduling, and medical records with modern UI/UX design.
-                </p>
-                <div class="project-tech">
-                    <span class="tech-tag">PHP</span>
-                    <span class="tech-tag">Laravel</span>
-                    <span class="tech-tag">Vue.js</span>
-                    <span class="tech-tag">MySQL</span>
-                </div>
-            </div>
-            <div class="project-card scroll-reveal">
-                <div class="project-number">02</div>
-                <h3 class="project-title">Social Network</h3>
-                <p class="project-description">
-                    Feature-rich social networking platform with real-time messaging, 
-                    post sharing, and advanced user engagement capabilities.
-                </p>
-                <div class="project-tech">
-                    <span class="tech-tag">React</span>
-                    <span class="tech-tag">Node.js</span>
-                    <span class="tech-tag">Socket.io</span>
-                    <span class="tech-tag">MongoDB</span>
-                </div>
-            </div>
-            <div class="project-card scroll-reveal">
-                <div class="project-number">03</div>
-                <h3 class="project-title">Library Management</h3>
-                <p class="project-description">
-                    Complete library management solution with book cataloging, 
-                    member management, and automated fine calculation system.
-                </p>
-                <div class="project-tech">
-                    <span class="tech-tag">Java</span>
-                    <span class="tech-tag">Spring Boot</span>
-                    <span class="tech-tag">Thymeleaf</span>
-                    <span class="tech-tag">PostgreSQL</span>
-                </div>
-            </div>
-            <div class="project-card scroll-reveal">
-                <div class="project-number">04</div>
-                <h3 class="project-title">E-Commerce Platform</h3>
-                <p class="project-description">
-                    Modern e-commerce solution with payment integration, 
-                    inventory management, and responsive design for all devices.
-                </p>
-                <div class="project-tech">
-                    <span class="tech-tag">Vue.js</span>
-                    <span class="tech-tag">Nuxt.js</span>
-                    <span class="tech-tag">Stripe</span>
-                    <span class="tech-tag">Firebase</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="contact">
-        <h2 class="contact-title scroll-reveal">Let's Connect</h2>
-        <p class="contact-subtitle scroll-reveal">
-            Ready to bring your ideas to life? Let's discuss your next project and create something amazing together.
-        </p>
-        <div class="contact-info scroll-reveal">
-            <a href="mailto:echalhadil@gmail.com" class="contact-item">
-                <span class="contact-icon">✉️</span>
-                <span>echalhadil@gmail.com</span>
-            </a>
-            <a href="https://linkedin.com/in/echalh-adil" class="contact-item" target="_blank">
-                <span class="contact-icon">💼</span>
-                <span>LinkedIn</span>
-            </a>
-            <a href="https://github.com/echalhadil" class="contact-item" target="_blank">
-                <span class="contact-icon">💻</span>
-                <span>GitHub</span>
+            <a href="mailto:echalhadil@gmail.com"
+                class="bg-accent text-white px-8 py-4 rounded-full text-lg font-semibold hover:scale-105 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 inline-block scroll-reveal">
+                Start a Project
             </a>
         </div>
-        <a href="mailto:echalhadil@gmail.com" class="cta-button scroll-reveal">Start a Project</a>
     </section>
 
-    <script>
-        // Custom Cursor
-        const cursor = document.querySelector('.cursor');
-        const cursorFollower = document.querySelector('.cursor-follower');
-        let mouseX = 0;
-        let mouseY = 0;
-        let followerX = 0;
-        let followerY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            cursor.style.left = mouseX + 'px';
-            cursor.style.top = mouseY + 'px';
-        });
-
-        function animateFollower() {
-            const delay = 0.1;
-            followerX += (mouseX - followerX) * delay;
-            followerY += (mouseY - followerY) * delay;
-            
-            cursorFollower.style.left = followerX + 'px';
-            cursorFollower.style.top = followerY + 'px';
-            
-            requestAnimationFrame(animateFollower);
-        }
-        animateFollower();
-
-        // Cursor interactions
-        const interactiveElements = document.querySelectorAll('a, button, .skill-card, .project-card');
-        
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(1.5)';
-                cursorFollower.style.transform = 'scale(1.5)';
-            });
-            
-            el.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
-                cursorFollower.style.transform = 'scale(1)';
-            });
-        });
-
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Scroll reveal animation
-        const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
-        
-        const revealOnScroll = () => {
-            scrollRevealElements.forEach(el => {
-                const elementTop = el.getBoundingClientRect().top;
-                const elementVisible = 100;
-                
-                if (elementTop < window.innerHeight - elementVisible) {
-                    el.classList.add('revealed');
-                }
-            });
-        };
-
-        window.addEventListener('scroll', revealOnScroll);
-        revealOnScroll(); // Check on load
-
-        // Navbar scroll effect
-        let lastScrollTop = 0;
-        const navbar = document.querySelector('.navbar');
-
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
-                navbar.style.transform = 'translateY(-100%)';
-            } else {
-                navbar.style.transform = 'translateY(0)';
-            }
-            
-            if (scrollTop > 100) {
-                navbar.style.background = 'rgba(0, 0, 0, 0.9)';
-            } else {
-                navbar.style.background = 'transparent';
-            }
-            
-            lastScrollTop = scrollTop;
-        });
-
-        // Parallax effect for hero
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const heroText = document.querySelector('.hero-text');
-            const parallaxSpeed = 0.5;
-            
-            heroText.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
-        });
-
-        // Text animation for hero title
-        const heroTitleSpans = document.querySelectorAll('.hero-title .line span');
-        heroTitleSpans.forEach((span, index) => {
-            span.style.animationDelay = `${index * 0.1}s`;
-        });
-
-        // Counter animation for stats
-        const animateCounters = () => {
-            const counters = document.querySelectorAll('.stat-number');
-            
-            counters.forEach(counter => {
-                const target = parseInt(counter.textContent);
-                const increment = target / 60;
-                let current = 0;
-                
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        counter.textContent = target + '+';
-                        clearInterval(timer);
-                    } else {
-                        counter.textContent = Math.floor(current) + '+';
-                    }
-                }, 50);
-            });
-        };
-
-        // Trigger counter animation when about section is visible
-        const aboutSection = document.querySelector('.about');
-        const aboutObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounters();
-                    aboutObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        aboutObserver.observe(aboutSection);
-
-        // Add stagger animation to grid items
-        const addStaggerAnimation = (selector, delay = 100) => {
-            const elements = document.querySelectorAll(selector);
-            elements.forEach((el, index) => {
-                el.style.animationDelay = `${index * delay}ms`;
-            });
-        };
-
-        addStaggerAnimation('.skill-card');
-        addStaggerAnimation('.project-card');
-    </script>
+    <script src="script.js"></script>
 </body>
+
 </html>
